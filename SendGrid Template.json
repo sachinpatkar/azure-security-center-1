@@ -1,0 +1,80 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "accounts_SendGrid_password": {
+            "type": "securestring"
+        },
+        "accounts_SendGrid_acceptMarketingEmails": {
+            "type": "bool"
+        },
+        "accounts_SendGrid_name": {
+            "defaultValue": "Lululemon_SendGrid",
+            "type": "string"
+        },
+        "environment": {
+            "type": "string",
+            "metadata": {
+                "description": "tags"
+            }
+        },
+        "deployed-by": {
+            "type": "string",
+            "metadata": {
+                "description": "tags"
+            }
+        },
+        "project-name": {
+            "type": "string",
+            "metadata": {
+                "description": "tags"
+            }
+        },
+        "department": {
+            "type": "string",
+            "metadata": {
+                "description": "tags"
+            }
+        },
+        "project-code": {
+            "type": "string",
+            "metadata": {
+                "description": "tags"
+            }
+        },
+        "cost-center": {
+            "type": "string",
+            "metadata": {
+                "description": "tags"
+            }
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Sendgrid.Email/accounts",
+            "apiVersion": "2015-01-01",
+            "name": "[parameters('accounts_SendGrid_name')]",
+            "location": "canadacentral",
+            "tags":{
+                "lll:deployment:environment":  "[parameters('environment')]",
+                "lll:deployment:deployed-by":  "[parameters('deployed-by')]",
+                "lll:business:project-name":  "[parameters('project-name')]",
+                "lll:business:department" : "[parameters('department')]",
+                "lll:business:project-code":  "[parameters('project-code')]",
+                "lll:business:cost-center":  "[parameters('cost-center')]"
+            },
+            "plan": {
+                "name": "free",
+                "promotionCode": "",
+                "product": "sendgrid_azure",
+                "publisher": "Sendgrid"
+            },
+            "properties": {
+                "email": "ASC.Reporting@Lululemon.com",
+                "password": "[parameters('accounts_SendGrid_password')]",
+                "acceptMarketingEmails": "[parameters('accounts_SendGrid_acceptMarketingEmails')]"
+            }
+        }
+    ]
+}
